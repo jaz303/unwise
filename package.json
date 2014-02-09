@@ -19,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/jaz303/unwise/issues"
   },
-  "homepage": "https://github.com/jaz303/unwise"
+  "homepage": "https://github.com/jaz303/unwise",
+  "devDependencies": {
+    "pegjs": "~0.8.0"
+  }
 }
