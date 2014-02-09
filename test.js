@@ -17,6 +17,8 @@ env.define(root, 'abs', D(
     }
 ));
 
+env.define(root, 'FOO', ast.value(100, 'px'));
+
 var p1 = ast.pair('margin', [
     ast.value(10, 'px'),
     ast.value(20, 'px'),
@@ -30,7 +32,7 @@ var p2 = ast.pair('padding', [
             -1.5,
             ast.binOp('+',
                 ast.value(10, 'px'),
-                ast.value(30, 'px')))
+                ast.variable('FOO')))
     ]),
     ast.value(10, 'px'),
     ast.value(20, 'px'),
