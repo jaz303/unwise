@@ -1,2 +1,100 @@
-start
-	= 'hello'
+{
+	var A = require('./ast');
+}
+
+/*
+ * Entry
+ */
+
+_
+	= [ \t\r\n]*
+
+/*
+ * Helpers
+ */
+
+non_zero_digit
+	= [1-9]
+
+digit
+	= [0-9]
+
+number
+	= float
+	/ integer
+
+float
+	= rhead:non_zero_digit rtail:digit* '.' ftail:digit+ {
+		return parseFloat(head + rtail.join('') + '.' + ftail.join(''));
+	}
+
+integer
+	= head:non_zero_digit tail:digit* {
+		return parseInt(head + tail.join(''), 10);
+	}
+
+/*
+ * Productions
+ */
+
+Start
+	= _ rules:(Rule)* {
+		return A.rules(rules);
+	}
+
+Rule
+	= sel:Selector body:Block {
+		return A.rule(sel, body);
+	}
+
+Selector
+	= Element _
+
+Element
+	= head:[a-zA-Z] tail:[a-zA-Z-]* {
+		return head + tail.join('');
+	}
+
+Block
+	= '{' _ body:BlockInner* '}' _ {
+		return body;
+	}
+
+BlockInner
+	= Rule
+	/ Pair
+
+Pair
+	= prop:Property ':' _ values:Value+ ';' _ {
+		return A.pair(prop, values)
+	}
+
+Property
+	= name:[a-zA-Z-] _ {
+		return name;
+	}
+
+Value
+	= NumberWithUnits
+	/ Number
+
+NumberWithUnits
+	= number:number unit:Unit {
+		return A.value(number, unit);
+	}
+
+Number
+	= number:number {
+		return number;
+	}
+
+Unit
+	= 'cm'
+	/ 'mm'
+	/ 'in'
+	/ 'pt'
+	/ 'px'
+	/ 'pc'
+	/ 'deg'
+	/ 'rad'
+
