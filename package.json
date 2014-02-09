@@ -1,6 +1,6 @@
 {
   "name": "unwise",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "SCSS-inspired CSS preprocessor",
   "main": "index.js",
   "scripts": {
