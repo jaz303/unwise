@@ -70,13 +70,18 @@ Pair
     }
 
 Property
-    = name:[a-zA-Z-] _ {
-        return name;
+    = name:[a-zA-Z-]+ _ {
+        return name.join('');
     }
 
+/*
+ * TODO: string, URL, function call, expression
+ */
 Value
     = NumberWithUnits
     / Number
+    / Symbol
+    / Variable
 
 NumberWithUnits
     = number:number unit:Unit {
@@ -98,3 +103,12 @@ Unit
     / 'deg'
     / 'rad'
 
+Symbol
+    = sym:[a-zA-Z-]+ _ {
+        return sym.join('');
+    }
+
+Variable
+    = '$' head:[a-zA-Z_] tail:[a-zA-Z9-9_]* {
+        return A.variable(head + tail.join(''));
+    }
