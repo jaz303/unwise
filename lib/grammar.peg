@@ -81,7 +81,9 @@ Value
     = NumberWithUnits
     / Number
     / Symbol
+    / ',' _
     / Variable
+
 
 NumberWithUnits
     = number:number unit:Unit {
