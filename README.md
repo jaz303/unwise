@@ -7,3 +7,13 @@ It's just an AST-walker at the moment (no parser) but it can handle nested rules
 ## Why?
 
 `unwise` is designed for runtime CSS generation, embedded in an application. Furthermore, it will eventually export a dependency graph of all variables so live-updates are possible.
+
+## TODO
+
+  * All AST nodes should assign type explicitly
+  * Start a suite of parser tests
+  * Mixin AST node
+  * Mixin parse
+  * Work out variable interpolation
+  * Touched variables
+  * Exported variables
