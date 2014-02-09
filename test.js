@@ -1,5 +1,22 @@
 var ast = require('./lib/ast');
 
+var env = require('./lib/env');
+
+var root = env.create();
+
+var T = require('./lib/ast/types');
+
+var D = require('./lib/dispatch');
+
+env.define(root, 'abs', D(
+	['value'], function(env, val) {
+		return ast.value(Math.abs(val.number), val.unit);
+	},
+	['number'], function(env, val) {
+		return Math.abs(val);
+	}
+));
+
 var p1 = ast.pair('margin', [
 	ast.value(10, 'px'),
 	ast.value(20, 'px'),
@@ -8,7 +25,13 @@ var p1 = ast.pair('margin', [
 ]);
 
 var p2 = ast.pair('padding', [
-	ast.binOp('*', 1.5, ast.binOp('+', ast.value(10, 'px'), ast.value(30, 'px'))),
+	ast.call('abs', [
+		ast.binOp('*',
+			-1.5,
+			ast.binOp('+',
+				ast.value(10, 'px'),
+				ast.value(30, 'px')))
+	]),
 	ast.value(10, 'px'),
 	ast.value(20, 'px'),
 	ast.value(30, 'px')
@@ -28,4 +51,4 @@ var r2 = ast.rule('body', [
 
 var rules = ast.rules([r2]);
 
-console.log(require('./lib/emitter')(rules));
+console.log(require('./lib/emitter')(root, rules));
