@@ -14,13 +14,16 @@ var p2 = ast.pair('padding', [
 	ast.value(30, 'px')
 ]);
 
+var p3 = ast.pair('background-color', ['#ff0000']);
+
 var r1 = ast.rule('&.foo', [
 	p1,
 	p2
 ]);
 
 var r2 = ast.rule('body', [
-	r1
+	r1,
+	p3
 ]);
 
 var rules = ast.rules([r2]);
