@@ -52,6 +52,67 @@ Selector
         return [el];
     }
 
+Chunk
+    = el:Element _ {
+
+    }
+
+Combinator
+    = '>'   { return ' > '; }
+    / '~'   { return ' ~ '; }
+    / '+'   { return ' + '; }
+
+Attrib
+    = '[' _ AttributeName _ AttributeOperator _ AttributeValue _ ']'
+    / '[' _ AttributeName _ ']'
+
+AttributeName
+    = Symbol
+
+AttributeOperator
+    = '='
+    / '~='
+    / '^='
+    / '$='
+    / '*='
+    / '|='
+
+AttributeValue
+    = Symbol
+
+SinglePseudo
+    = 'root'
+    / 'nth-child(' _ n:NTerm _ ')'
+    / 'nth-last-child(' _ n:NTerm _ ')'
+    / 'nth-of-type(' _ n:NTerm _ ')'
+    / 'nth-last-of-type(' _ n:NTerm _ ')'
+    / 'first-child'
+    / 'last-child'
+    / 'first-of-type'
+    / 'last-of-type'
+    / 'only-child'
+    / 'only-of-type'
+    / 'empty'
+    / 'link'
+    / 'visited'
+    / 'active'
+    / 'hover'
+    / 'focus'
+    / 'target'
+    / 'lang(' Symbol ')'
+    / 'enabled'
+    / 'disabled'
+    / 'checked'
+
+DoublePseudo
+    = 'first-line'
+    / 'first-letter'
+    / 'before'
+    / 'after'
+
+NTerm
+    = integer
+
 Element
     = head:[a-zA-Z] tail:[a-zA-Z0-9-]* {
         return head + tail.join('');
