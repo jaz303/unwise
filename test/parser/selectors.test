@@ -1,0 +1,40 @@
+div {}
+.foo {}
+.foo.bar {}
+#my-id {}
+#my-id.red {}
+[rel="next"] {}
+[rel="next"][src="foo.jpg"] {}
+:hover {}
+:hover:first-of-type {}
+h1#hello.a.b.c[type="biscuit"]:hover::first-line {}
+> a {}
+> a ~ b {}
+a > b + c {}
+&:hover {}
+a b c {}
+a.a1 > b.b2 c.c3 > d.d4.d5 + e#id {}
+
+---
+
+{
+    type: T.RULES,
+    body: [
+        { type: T.RULE, selector: ['div'], body: [] },
+        { type: T.RULE, selector: ['.foo'], body: [] },
+        { type: T.RULE, selector: ['.foo.bar'], body: [] },
+        { type: T.RULE, selector: ['#my-id'], body: [] },
+        { type: T.RULE, selector: ['#my-id.red'], body: [] },
+        { type: T.RULE, selector: ['[rel="next"]'], body: [] },
+        { type: T.RULE, selector: ['[rel="next"][src="foo.jpg"]'], body: [] },
+        { type: T.RULE, selector: [':hover'], body: [] },
+        { type: T.RULE, selector: [':hover:first-of-type'], body: [] },
+        { type: T.RULE, selector: ['h1#hello.a.b.c[type="biscuit"]:hover::first-line'], body: [] },
+        { type: T.RULE, selector: ['>', 'a'], body: [] },
+        { type: T.RULE, selector: ['>', 'a', '~', 'b'], body: [] },
+        { type: T.RULE, selector: ['a', '>', 'b', '+', 'c'], body: [] },
+        { type: T.RULE, selector: ['&', ':hover'], body: [] },
+        { type: T.RULE, selector: ['a', 'b', 'c'], body: [] },
+        { type: T.RULE, selector: ['a.a1', '>', 'b.b2', 'c.c3', '>', 'd.d4.d5', '+', 'e#id'], body: [] },
+    ]
+}

@@ -44,26 +44,20 @@ Rule
     }
 
 Selector
-    = ch:Chunk _ frags:Fragment* {
-        var result = [ch];
-        for (var i = 0; i < frags.length; ++i) {
-            result.push(frags[i][0]);
-            result.push(frags[i][1]);
-        }
-        return result;
-    }
-    / frags:Fragment* {
+    = frags:Fragment+ {
         var result = [];
         for (var i = 0; i < frags.length; ++i) {
-            result.push(frags[i][0]);
-            result.push(frags[i][1]);
+            result = result.concat(frags[i]);
         }
         return result;
     }
-    
+
 Fragment
     = co:Combinator _ ch:Chunk _ {
         return [co, ch];
+    }
+    / ch:Chunk _ {
+        return [ch];
     }
 
 Chunk
@@ -73,13 +67,13 @@ Chunk
     / i:ID c:Class* a:Attrib* p:Pseudo* {
         return i + c.join('') + a.join('') + p.join('');
     }
-    / Class+ Attrib* Pseudo* {
+    / c:Class+ a:Attrib* p:Pseudo* {
         return c.join('') + a.join('') + p.join('');
     }
-    / Attrib+ Pseudo* {
+    / a:Attrib+ p:Pseudo* {
         return a.join('') + p.join('');
     }
-    / Pseudo+ {
+    / p:Pseudo+ {
         return p.join('');
     }
 
@@ -102,14 +96,18 @@ Class
     }
 
 Combinator
-    = '>'   { return ' > '; }
-    / '~'   { return ' ~ '; }
-    / '+'   { return ' + '; }
-    / '&'   { return ' & '; }
+    = '>'   { return '>'; }
+    / '~'   { return '~'; }
+    / '+'   { return '+'; }
+    / '&'   { return '&'; }
 
 Attrib
-    = '[' _ AttributeName _ AttributeOperator _ AttributeValue _ ']'
-    / '[' _ AttributeName _ ']'
+    = '[' _ name:AttributeName _ op:AttributeOperator _ value:AttributeValue _ ']' {
+        return '[' + name + op + value + ']';
+    }
+    / '[' _ name:AttributeName _ ']' {
+        return '[' + name + ']';
+    }
 
 AttributeName
     = Symbol
@@ -123,7 +121,7 @@ AttributeOperator
     / '|='
 
 AttributeValue
-    = Symbol
+    = String
 
 Pseudo
     = '::' p:DoublePseudo   { return '::' + p; }
@@ -198,6 +196,7 @@ Value
     }
     / Number
     / Symbol
+    / String
     / ',' _
     / Variable
 
@@ -229,4 +228,13 @@ Symbol
 Variable
     = '$' head:[a-zA-Z_] tail:[a-zA-Z9-9_]* {
         return A.variable(head + tail.join(''));
+    }
+
+/* TODO: decode/handle escapes */
+String
+    = '"' ch:[^"]* '"' {
+        return A.string(ch.join(''));
+    }
+    / "'" ch:[^']+ "'" {
+        return A.string(ch.join(''));
     }
