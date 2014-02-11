@@ -17,13 +17,13 @@ span {
     body: [
         {
             type: T.RULE,
-            selector: 'div',
+            selector: ['div'],
             body: [
                 { type: T.PAIR, key: 'color', values: ['red'] },
                 { type: T.PAIR, key: 'background-color', values: ['blue'] },
                 {
                     type: T.RULE,
-                    selector: 'h1',
+                    selector: ['h1'],
                     body: [
                         {
                             type: T.PAIR, key: 'font-size', values: [
@@ -36,7 +36,7 @@ span {
         },
         {
             type: T.RULE,
-            selector: 'span',
+            selector: ['span'],
             body: [
                 { type: T.PAIR, key: 'line-height', values: [1] }
             ]

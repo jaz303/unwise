@@ -49,7 +49,7 @@ Rule
 
 Selector
     = el:Element _ {
-        return el;
+        return [el];
     }
 
 Element
