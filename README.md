@@ -10,11 +10,20 @@ It's just an AST-walker at the moment (no parser) but it can handle nested rules
 
 ## TODO
 
-  * All AST nodes should assign type explicitly
-  * Start a suite of parser tests
-  * Mixin AST node
-  * Mixin parse
-  * Work out variable interpolation
+### Parser
+
+  * <del>Test framework in place</del>
+  * <del>Test simple case</del>
+  * Full selector parsing: elements, IDs, classes, attributes, pseudo classes, combinators
+  * Selector interpolation
+  * Values/lists
+  * Variables
+  * User-defined function calls
+
+### Other
+
+  * <del>All AST nodes should assign type explicitly</del>
+  * Mixins
   * Touched variables
   * Exported variables
   * DSL for in-browser building (like `css-builder`)
