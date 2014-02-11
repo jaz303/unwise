@@ -1,0 +1,45 @@
+div {
+    color: red;
+    background-color: blue;
+    h1 {
+        font-size: 32px;
+    }
+}
+
+span {
+    line-height: 1;
+}
+
+---
+
+{
+    type: T.RULES,
+    body: [
+        {
+            type: T.RULE,
+            selector: 'div',
+            body: [
+                { type: T.PAIR, key: 'color', values: ['red'] },
+                { type: T.PAIR, key: 'background-color', values: ['blue'] },
+                {
+                    type: T.RULE,
+                    selector: 'h1',
+                    body: [
+                        {
+                            type: T.PAIR, key: 'font-size', values: [
+                                { type: T.VALUE, number: 32, unit: 'px' }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            type: T.RULE,
+            selector: 'span',
+            body: [
+                { type: T.PAIR, key: 'line-height', values: [1] }
+            ]
+        }
+    ]
+}

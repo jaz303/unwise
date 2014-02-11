@@ -6,12 +6,17 @@
  * Entry
  */
 
-_
-    = [ \t\r\n]*
+Start
+    = _ rules:(Rule)* {
+        return A.rules(rules);
+    }
 
 /*
  * Helpers
  */
+
+_
+    = [ \t\r\n]*
 
 non_zero_digit
     = [1-9]
@@ -37,21 +42,18 @@ integer
  * Productions
  */
 
-Start
-    = _ rules:(Rule)* {
-        return A.rules(rules);
-    }
-
 Rule
     = sel:Selector body:Block {
         return A.rule(sel, body);
     }
 
 Selector
-    = Element _
+    = el:Element _ {
+        return el;
+    }
 
 Element
-    = head:[a-zA-Z] tail:[a-zA-Z-]* {
+    = head:[a-zA-Z] tail:[a-zA-Z0-9-]* {
         return head + tail.join('');
     }
 
