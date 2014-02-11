@@ -24,18 +24,14 @@ non_zero_digit
 digit
     = [0-9]
 
-number
-    = float
-    / integer
-
 float
     = rhead:non_zero_digit rtail:digit* '.' ftail:digit+ {
-        return parseFloat(head + rtail.join('') + '.' + ftail.join(''));
+        return head + rtail.join('') + '.' + ftail.join('');
     }
 
 integer
     = head:non_zero_digit tail:digit* {
-        return parseInt(head + tail.join(''), 10);
+        return head + tail.join('');
     }
 
 /*
@@ -48,19 +44,68 @@ Rule
     }
 
 Selector
-    = el:Element _ {
-        return [el];
+    = ch:Chunk _ frags:Fragment* {
+        var result = [ch];
+        for (var i = 0; i < frags.length; ++i) {
+            result.push(frags[i][0]);
+            result.push(frags[i][1]);
+        }
+        return result;
+    }
+    / frags:Fragment* {
+        var result = [];
+        for (var i = 0; i < frags.length; ++i) {
+            result.push(frags[i][0]);
+            result.push(frags[i][1]);
+        }
+        return result;
+    }
+    
+Fragment
+    = co:Combinator _ ch:Chunk _ {
+        return [co, ch];
     }
 
 Chunk
-    = el:Element _ {
+    = e:Element i:ID? c:Class* a:Attrib* p:Pseudo* {
+        return e + (i || '') + c.join('') + a.join('') + p.join('');
+    }
+    / i:ID c:Class* a:Attrib* p:Pseudo* {
+        return i + c.join('') + a.join('') + p.join('');
+    }
+    / Class+ Attrib* Pseudo* {
+        return c.join('') + a.join('') + p.join('');
+    }
+    / Attrib+ Pseudo* {
+        return a.join('') + p.join('');
+    }
+    / Pseudo+ {
+        return p.join('');
+    }
 
+Element
+    = '*' {
+        return '*';
+    }
+    / head:[a-zA-Z] tail:[a-zA-Z0-9-]* {
+        return head + tail.join('');
+    }
+
+ID
+    = '#' s:Symbol {
+        return '#' + s;
+    }
+
+Class
+    = '.' s:Symbol {
+        return '.' + s;
     }
 
 Combinator
     = '>'   { return ' > '; }
     / '~'   { return ' ~ '; }
     / '+'   { return ' + '; }
+    / '&'   { return ' & '; }
 
 Attrib
     = '[' _ AttributeName _ AttributeOperator _ AttributeValue _ ']'
@@ -79,6 +124,10 @@ AttributeOperator
 
 AttributeValue
     = Symbol
+
+Pseudo
+    = '::' p:DoublePseudo   { return '::' + p; }
+    / ':' p:SinglePseudo    { return ':' + p; }
 
 SinglePseudo
     = 'root'
@@ -111,11 +160,14 @@ DoublePseudo
     / 'after'
 
 NTerm
-    = integer
+    = Formula
+    / 'odd'
+    / 'even'
+    / integer
 
-Element
-    = head:[a-zA-Z] tail:[a-zA-Z0-9-]* {
-        return head + tail.join('');
+Formula
+    = a:integer 'n' plus:('+' b:integer)? {
+        return (a + 'n+') + (plus ? b : '0');
     }
 
 Block
@@ -141,23 +193,24 @@ Property
  * TODO: string, URL, function call, expression
  */
 Value
-    = NumberWithUnits
+    = n:Number u:Unit {
+        return A.value(n, u);
+    }
     / Number
     / Symbol
     / ',' _
     / Variable
 
-
-NumberWithUnits
-    = number:number unit:Unit {
-        return A.value(number, unit);
-    }
-
 Number
-    = number:number {
-        return number;
-    }
+    = Float
+    / Integer
 
+Integer
+    = v:integer { return parseInt(v, 10); }
+
+Float
+    = v:float { return parseFloat(v); }
+    
 Unit
     = 'cm'
     / 'mm'
@@ -169,8 +222,8 @@ Unit
     / 'rad'
 
 Symbol
-    = sym:[a-zA-Z-]+ _ {
-        return sym.join('');
+    = head:[a-zA-Z-] tail:[a-zA-Z0-9_-]* _ {
+        return head + tail.join('');
     }
 
 Variable

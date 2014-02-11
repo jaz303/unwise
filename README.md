@@ -14,7 +14,7 @@ It's just an AST-walker at the moment (no parser) but it can handle nested rules
 
   * <del>Test framework in place</del>
   * <del>Test simple case</del>
-  * Full selector parsing: elements, IDs, classes, attributes, pseudo classes, combinators
+  * <del>Full selector parsing: elements, IDs, classes, attributes, pseudo classes, combinators</del>
   * Selector interpolation
   * Values/lists
   * Variables
