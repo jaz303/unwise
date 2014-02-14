@@ -61,21 +61,11 @@ Fragment
     }
 
 Chunk
-    = e:Element i:ID? c:Class* a:Attrib* p:Pseudo* {
-        return e + (i || '') + c.join('') + a.join('') + p.join('');
-    }
-    / i:ID c:Class* a:Attrib* p:Pseudo* {
-        return i + c.join('') + a.join('') + p.join('');
-    }
-    / c:Class+ a:Attrib* p:Pseudo* {
-        return c.join('') + a.join('') + p.join('');
-    }
-    / a:Attrib+ p:Pseudo* {
-        return a.join('') + p.join('');
-    }
-    / p:Pseudo+ {
-        return p.join('');
-    }
+    = $ ( Element ID? Class* Attrib* Pseudo* )
+    / $ ( ID Class* Attrib* Pseudo* )
+    / $ ( Class+ Attrib* Pseudo* )
+    / $ ( Attrib+ Pseudo* )
+    / $ Pseudo+
 
 Element
     = '*' {
@@ -231,7 +221,7 @@ Unit
     / 'rad'
 
 Symbol
-    = head:[a-zA-Z-] tail:[a-zA-Z0-9_-]* _ {
+    = head:[a-zA-Z-] tail:[a-zA-Z0-9_-]* {
         return head + tail.join('');
     }
 
