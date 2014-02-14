@@ -150,6 +150,7 @@ SinglePseudo
     / 'enabled'
     / 'disabled'
     / 'checked'
+    / 'not(' _ sel:Chunk _ ')' { return 'not(' + sel + ')'; }
 
 DoublePseudo
     = 'first-line'

@@ -14,6 +14,7 @@ a > b + c {}
 &:hover {}
 a b c {}
 a.a1 > b.b2 c.c3 > d.d4.d5 + e#id {}
+a:not(p.foo[a="b"]) {}
 
 ---
 
@@ -36,5 +37,6 @@ a.a1 > b.b2 c.c3 > d.d4.d5 + e#id {}
         { type: T.RULE, selector: ['&', ':hover'], body: [] },
         { type: T.RULE, selector: ['a', 'b', 'c'], body: [] },
         { type: T.RULE, selector: ['a.a1', '>', 'b.b2', 'c.c3', '>', 'd.d4.d5', '+', 'e#id'], body: [] },
+        { type: T.RULE, selector: ['a:not(p.foo[a="b"])'], body: [] }
     ]
 }
