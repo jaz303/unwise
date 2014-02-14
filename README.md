@@ -17,7 +17,7 @@ It's just an AST-walker at the moment (no parser) but it can handle nested rules
   * <del>Full selector parsing: elements, IDs, classes, attributes, pseudo classes, combinators</del>
   * Selector interpolation
   * Values/lists
-  * Variables
+  * <del>Variables</del>
   * User-defined function calls
 
 ### Other
