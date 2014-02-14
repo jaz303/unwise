@@ -25,14 +25,10 @@ digit
     = [0-9]
 
 float
-    = rhead:non_zero_digit rtail:digit* '.' ftail:digit+ {
-        return head + rtail.join('') + '.' + ftail.join('');
-    }
+    = $ ( non_zero_digit digit* '.' digit+ )
 
 integer
-    = head:non_zero_digit tail:digit* {
-        return head + tail.join('');
-    }
+    = $ ( non_zero_digit digit* )
 
 /*
  * Productions
@@ -68,28 +64,20 @@ Chunk
     / $ Pseudo+
 
 Element
-    = '*' {
-        return '*';
-    }
-    / head:[a-zA-Z] tail:[a-zA-Z0-9-]* {
-        return head + tail.join('');
-    }
+    = $ '*'
+    / $( [a-zA-Z] [a-zA-Z0-9-]* )
 
 ID
-    = '#' s:Symbol {
-        return '#' + s;
-    }
+    = $ ( '#' Symbol )
 
 Class
-    = '.' s:Symbol {
-        return '.' + s;
-    }
+    =  $( '.' Symbol )
 
 Combinator
-    = '>'   { return '>'; }
-    / '~'   { return '~'; }
-    / '+'   { return '+'; }
-    / '&'   { return '&'; }
+    = '>'
+    / '~'
+    / '+'
+    / '&'
 
 Attrib
     = '[' _ name:AttributeName _ op:AttributeOperator _ value:AttributeValue _ ']' {
@@ -173,14 +161,12 @@ BlockInner
     / Pair
     
 Pair
-    = prop:Property ':' _ values:Value+ ';' _ {
+    = prop:Property _ ':' _ values:Value+ ';' _ {
         return A.pair(prop, values)
     }
 
 Property
-    = name:[a-zA-Z-]+ _ {
-        return name.join('');
-    }
+    = $ ( [a-zA-Z-]+ )
 
 Assignment
     = variable:Variable _ ':' _ values:Value+ ';' _ {
@@ -221,9 +207,7 @@ Unit
     / 'rad'
 
 Symbol
-    = head:[a-zA-Z-] tail:[a-zA-Z0-9_-]* {
-        return head + tail.join('');
-    }
+    = $ ( [a-zA-Z-] [a-zA-Z0-9_-]* )
 
 Variable
     = '$' head:[a-zA-Z_] tail:[a-zA-Z9-9_]* {
