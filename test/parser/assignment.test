@@ -1,0 +1,23 @@
+$FOO : bleem ;
+
+div {
+    $BAR : baz ;
+}
+
+---
+
+{
+    type: T.RULES,
+    body: [
+        {
+            type: T.ASSIGNMENT, variable: { type: 'variable', name: 'FOO' }, value: ['bleem']
+        },
+        {
+            type: T.RULE,
+            selector: ['div'],
+            body: [
+                { type: T.ASSIGNMENT, variable: { type: 'variable', name: 'BAR' }, value: ['baz'] }
+            ]
+        }
+    ]
+}

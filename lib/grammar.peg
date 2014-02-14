@@ -7,7 +7,7 @@
  */
 
 Start
-    = _ rules:(Rule)* {
+    = _ rules:(TopLevel)* {
         return A.rules(rules);
     }
 
@@ -173,10 +173,14 @@ Block
         return body;
     }
 
-BlockInner
-    = Rule
-    / Pair
+TopLevel
+    = Assignment
+    / Rule
 
+BlockInner
+    = TopLevel
+    / Pair
+    
 Pair
     = prop:Property ':' _ values:Value+ ';' _ {
         return A.pair(prop, values)
@@ -185,6 +189,11 @@ Pair
 Property
     = name:[a-zA-Z-]+ _ {
         return name.join('');
+    }
+
+Assignment
+    = variable:Variable _ ':' _ values:Value+ ';' _ {
+        return A.assignment(variable, values);
     }
 
 /*
