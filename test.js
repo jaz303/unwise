@@ -2,13 +2,13 @@ var ast = require('./lib/ast');
 
 var env = require('./lib/env');
 
-var root = env.create();
+var root = env();
 
 var T = require('./lib/ast/types');
 
 var D = require('./lib/dispatch');
 
-env.define(root, 'abs', D(
+root.define('abs', D(
     ['value'], function(env, val) {
         return ast.value(Math.abs(val.number), val.unit);
     },
@@ -17,7 +17,7 @@ env.define(root, 'abs', D(
     }
 ));
 
-env.define(root, 'FOO', ast.value(100, 'px'));
+root.define('FOO', ast.value(100, 'px'));
 
 var p1 = ast.pair('margin', [
     ast.value(10, 'px'),
